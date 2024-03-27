@@ -7,6 +7,7 @@ import HomeScreen from '../screens/homeScreen';
 import { Entypo } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import FoodViewScreen from '../screens/FoodViewScreen';
 
 
 const Stack = createNativeStackNavigator()
@@ -36,7 +37,7 @@ const MainNavigation = () => {
       />
       <Tab.Screen
         name="Restaurants"
-        component={HomeScreen}
+        component={FoodViewScreen}
         options={{
           headerTitle: 'Explore',
           headerShown: false,
