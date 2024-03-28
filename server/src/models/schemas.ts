@@ -19,6 +19,7 @@ export interface IFoodItem extends Document {
   restaurantId: string;
   imageUrl: string;
   ratings: number;
+  description: string;
   deliveryTime: number;
 }
 
@@ -48,6 +49,7 @@ export const foodItemSchema: Schema = new Schema({
   restaurantId: { type: Schema.Types.ObjectId, ref: 'Restaurant', required: true },
   imageUrl: { type: String, required: true },
   ratings: { type: Number, default: 0 },
+  description: { type: String, required: true },
   deliveryTime: { type: Number, required: true }
 });
 

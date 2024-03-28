@@ -2,18 +2,26 @@ import React from 'react';
 import { View, Text, ImageBackground, StyleSheet, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 const { width, height } = Dimensions.get('window');
+import { FontAwesome5 } from '@expo/vector-icons';
 
 export default function FoodViewScreen() {
   return (
     <ImageBackground source={require('../assets/bg_food.png')} style={styles.backgroundImage}>
+      <View style={{ position: 'absolute', top: 80, left: 20 }}>
+        <FontAwesome5 name="chevron-left" size={24} color="black" />
+      </View>
       <View style={styles.container}>
-        {/* Food Image */}
         <Image style={styles.foodImage} source={require('../assets/ham1.png')} />
 
         {/* Food Details */}
         <View style={styles.detailsContainer}>
           <View style={{ flexDirection: 'row', paddingHorizontal: 15, justifyContent: 'space-between', alignItems: 'center' }}>
-            <Text style={styles.foodName}>Chicken Burger</Text>
+            <View>
+              <Text style={styles.foodName}>Chicken Burger</Text>
+              <Text style={{ fontSize: 15 }}>Burger King</Text>
+              <Text></Text>
+            </View>
+
             <View style={{ flexDirection: 'row', alignItems: 'baseline', justifyContent: "center" }}>
               <Text style={{ fontSize: 22 }}>$</Text>
               <Text style={{ fontSize: 32, fontWeight: "600" }} >12</Text>
@@ -22,7 +30,7 @@ export default function FoodViewScreen() {
 
           </View>
           <View style={styles.infoContainer}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: width * 0.8, gap: 40, backgroundColor: '#FBF9FA', paddingHorizontal: 30, paddingVertical: 10, borderRadius: 10 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: width * 0.8, gap: 40, backgroundColor: '#FBF9FA', paddingHorizontal: 30, paddingVertical: 13, borderRadius: 10 }}>
               <View>
                 <Text style={styles.rating}>Rating</Text>
                 <Text>4.5</Text>
@@ -46,7 +54,23 @@ export default function FoodViewScreen() {
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sollicitudin magna at nulla consequat, id aliquet enim tristique. Vivamus auctor r Maecenas sed ultricies tortor, in suscipit mauris.
             </Text>
           </View>
-          <TouchableOpacity style={{ flexDirection: 'row', marginTop: 20, borderRadius: 30, alignItems: 'center', justifyContent: 'center', gap: 20, paddingVertical: 15, paddingHorizontal: 20, backgroundColor: '#430A5D' }}>
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              marginTop: 'auto',
+              position: 'absolute',
+              bottom: 62,
+              left: 35,
+              width: width * 0.8,
+              borderRadius: 30,
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 20,
+              paddingVertical: 15,
+              paddingHorizontal: 20,
+              backgroundColor: '#430A5D'
+            }}
+          >
             <FontAwesome name="cart-plus" size={35} color="white" />
             <Text style={{ fontSize: 18, color: 'white' }}>Add to Cart</Text>
           </TouchableOpacity>
@@ -83,15 +107,14 @@ const styles = StyleSheet.create({
     height: height * 0.5
   },
   infoContainer: {
-    paddingVertical: 20,
+    paddingVertical: 10,
 
     alignItems: 'center',
     justifyContent: 'center'
   },
   foodName: {
-    fontSize: 26,
+    fontSize: 23,
     fontWeight: 'bold',
-    marginBottom: 10,
   },
   price: {
     fontSize: 20,
