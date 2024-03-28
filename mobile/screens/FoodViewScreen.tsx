@@ -1,31 +1,60 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, ImageBackground, StyleSheet, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 const { width, height } = Dimensions.get('window');
 import { FontAwesome5 } from '@expo/vector-icons';
+import axios from 'axios';
+
+export interface IFoodItem {
+  name: string;
+  price: number;
+  categoryId: string;
+  restaurantId: string;
+  imageUrl: string;
+  ratings: number;
+  description: string;
+  deliveryTime: number;
+}
 
 export default function FoodViewScreen() {
+  const [foodData, setFoodData] = useState<IFoodItem | null>(null);
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+
+      const response = await axios.get(`https://foodio-mu.vercel.app/fooditems/66055878784095e43c6308e0`);
+      setFoodData(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+
   return (
     <ImageBackground source={require('../assets/bg_food.png')} style={styles.backgroundImage}>
       <View style={{ position: 'absolute', top: 80, left: 20 }}>
         <FontAwesome5 name="chevron-left" size={24} color="black" />
       </View>
       <View style={styles.container}>
-        <Image style={styles.foodImage} source={require('../assets/ham1.png')} />
+        <Image style={styles.foodImage} source={{ uri: foodData?.imageUrl }} />
+
 
         {/* Food Details */}
         <View style={styles.detailsContainer}>
           <View style={{ flexDirection: 'row', paddingHorizontal: 15, justifyContent: 'space-between', alignItems: 'center' }}>
             <View>
-              <Text style={styles.foodName}>Chicken Burger</Text>
-              <Text style={{ fontSize: 15 }}>Burger King</Text>
+              <Text style={styles.foodName}>{foodData?.name}</Text>
+              <Text style={{ fontSize: 15 }}>{foodData?.restaurantId}</Text>
               <Text></Text>
             </View>
 
             <View style={{ flexDirection: 'row', alignItems: 'baseline', justifyContent: "center" }}>
-              <Text style={{ fontSize: 22 }}>$</Text>
-              <Text style={{ fontSize: 32, fontWeight: "600" }} >12</Text>
-              <Text style={{ fontSize: 22 }}>.99</Text>
+              <Text style={{ fontSize: 22 }}>Rs</Text>
+              <Text style={{ fontSize: 35, fontWeight: "600" }} >{foodData?.price}</Text>
+
             </View>
 
           </View>
@@ -33,7 +62,7 @@ export default function FoodViewScreen() {
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: width * 0.8, gap: 40, backgroundColor: '#FBF9FA', paddingHorizontal: 30, paddingVertical: 13, borderRadius: 10 }}>
               <View>
                 <Text style={styles.rating}>Rating</Text>
-                <Text>4.5</Text>
+                <Text>{foodData?.ratings}</Text>
               </View>
               <View>
                 <Text style={styles.rating}>Delivery</Text>
@@ -41,7 +70,7 @@ export default function FoodViewScreen() {
               </View>
               <View>
                 <Text style={styles.rating}>Time</Text>
-                <Text>20 min</Text>
+                <Text>{foodData?.deliveryTime} min</Text>
               </View>
             </View>
 
@@ -51,7 +80,7 @@ export default function FoodViewScreen() {
               Description
             </Text>
             <Text style={styles.description}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sollicitudin magna at nulla consequat, id aliquet enim tristique. Vivamus auctor r Maecenas sed ultricies tortor, in suscipit mauris.
+              {foodData?.description}
             </Text>
           </View>
           <TouchableOpacity

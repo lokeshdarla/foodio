@@ -1,53 +1,38 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
+import axios from 'axios';
 
 var { width, height } = Dimensions.get('window');
 interface IFoodItem {
-  name: string,
-  price: string,
-  image: any,
-  preparationTime: string,
-  description: string
+  name: string;
+  price: number;
+  categoryId: string;
+  restaurantId: string;
+  imageUrl: string;
+  ratings: number;
+  description: string;
+  deliveryTime: number;
 }
 
 const FoodItemList = () => {
-  // Define data for food items
-  const foodItems: IFoodItem[] = [
-    {
-      name: 'Chicken Burger',
-      price: '$12.99',
-      image: require('../assets/ham1.png'),
-      preparationTime: '20 min',
-      description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa aliquid, iste, vel delectus quo rem dolores perspiciatis aut illo minus consequuntur quaerat doloribus possimus ducimus vitae, aliquam nostrum dicta maiores!'
-    },
-    {
-      name: 'Veggie Pizza',
-      price: '$10.99',
-      image: require('../assets/pizza.png'),
-      preparationTime: '25 min',
-      description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa aliquid, iste, vel delectus quo rem dolores perspiciatis aut illo minus consequuntur quaerat doloribus possimus ducimus vitae, aliquam nostrum dicta maiores!'
-    },
-    {
-      name: 'French Fries',
-      price: '$5.79',
-      image: require('../assets/fries.png'),
-      preparationTime: '15 min',
-      description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa aliquid, iste, vel delectus quo rem dolores perspiciatis aut illo minus consequuntur quaerat doloribus possimus ducimus vitae, aliquam nostrum dicta maiores!'
-    },
-    {
-      name: 'Chicken Biriyani',
-      price: '$25.79',
-      image: require('../assets/biriyani.png'),
-      preparationTime: '30 min',
-      description: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Culpa aliquid, iste, vel delectus quo rem dolores perspiciatis aut illo minus consequuntur quaerat doloribus possimus ducimus vitae, aliquam nostrum dicta maiores!'
-    },
-    // Add more food items as needed
-  ];
+  const [foodItems, setFoodItems] = useState<IFoodItem[]>([]);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
+  const fetchData = async () => {
+    try {
+
+      const response = await axios.get(`https://foodio-mu.vercel.app/fooditems/`);
+      setFoodItems(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
   return (
     <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
-      {/* Map over the foodItems array and render FoodItem components dynamically */}
+
       {foodItems.map((item, index) => (
         <FoodItem key={index} item={item} />
       ))}
@@ -56,35 +41,23 @@ const FoodItemList = () => {
 }
 
 
-interface IFoodItem {
-  name: string,
-  price: string,
-  image: any,
-  preparationTime: string,
-  description: string
-}
-
 
 
 const FoodItem: React.FC<{ item: IFoodItem }> = ({ item }) => {
-  const [showFoodView, setShowFoodView] = useState(false);
 
-  const handlePress = () => {
-    setShowFoodView(true);
-  };
 
   return (
     <>
-      <TouchableOpacity onPress={handlePress} style={styles.container}>
+      <TouchableOpacity style={styles.container}>
         <View style={{ flexDirection: 'row', gap: 5, position: 'absolute', zIndex: 20, right: 0, top: 6, backgroundColor: '#EEF5FF', padding: 5, borderRadius: 30, elevation: 3 }}>
           <Ionicons name="alarm-outline" size={20} color="red" />
-          <Text>{item.preparationTime}</Text>
+          <Text>{item.deliveryTime} min</Text>
         </View>
         <View style={{ elevation: 2, width: 170, padding: 10, borderRadius: 20, backgroundColor: 'white' }}>
-          <Image style={{ width: 150, height: 160 }} source={item.image} />
+          <Image style={{ width: 150, height: 160 }} source={{ uri: item.imageUrl }} />
           <Text style={{ fontSize: 17 }}>{item.name}</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Text style={{ fontSize: 25, fontWeight: "600" }}>{item.price}</Text>
+            <Text style={{ fontSize: 20, fontWeight: "600" }}>{item.price}</Text>
             <Ionicons name="add-circle-outline" size={24} color="black" />
           </View>
         </View>
