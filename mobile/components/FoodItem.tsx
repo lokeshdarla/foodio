@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 
 var { width, height } = Dimensions.get('window');
+
 interface IFoodItem {
   name: string;
   price: number;
@@ -15,30 +16,20 @@ interface IFoodItem {
   deliveryTime: number;
 }
 
-const FoodItemList = () => {
-  const [foodItems, setFoodItems] = useState<IFoodItem[]>([]);
-  useEffect(() => {
-    fetchData();
-  }, []);
+interface FoodItemListProps {
+  foodItems: IFoodItem[];
+}
 
-  const fetchData = async () => {
-    try {
-
-      const response = await axios.get(`https://foodio-mu.vercel.app/fooditems/`);
-      setFoodItems(response.data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
+const FoodItemList: React.FC<FoodItemListProps> = ({ foodItems }) => {
   return (
     <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
-
       {foodItems.map((item, index) => (
         <FoodItem key={index} item={item} />
       ))}
     </View>
   );
 }
+
 
 
 
@@ -55,7 +46,7 @@ const FoodItem: React.FC<{ item: IFoodItem }> = ({ item }) => {
         </View>
         <View style={{ elevation: 2, width: 170, padding: 10, borderRadius: 20, backgroundColor: 'white' }}>
           <Image style={{ width: 150, height: 160 }} source={{ uri: item.imageUrl }} />
-          <Text style={{ fontSize: 17 }}>{item.name}</Text>
+          <Text style={{ fontSize: 15, marginBottom: 5, fontWeight: '600', textAlign: 'center' }}>{item.name}</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <Text style={{ fontSize: 20, fontWeight: "600" }}>{item.price}</Text>
             <Ionicons name="add-circle-outline" size={24} color="black" />

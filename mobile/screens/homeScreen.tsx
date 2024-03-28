@@ -30,14 +30,14 @@ export default function HomeScreen() {
         <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'flex-start', gap: 10, paddingVertical: 30 }}>
           <Text style={{ fontSize: 45, width: width * 0.87, textAlign: 'left' }}>Order Some Delicious Food 🔥</Text>
         </View>
-        {/* <DealsSection /> */}
+        <DealsSection />
         <View style={{ width: width * 0.9, justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}>
           <Text style={{ fontSize: 25 }}>Categories</Text>
           <Text>View all</Text>
         </View>
         <CategoriesList />
 
-        <FoodItemList />
+
       </View>
     </ScrollView>
   );

@@ -22,7 +22,7 @@ export default function DealsSection() {
             </View>
           </View>
 
-          <Image style={styles.image} source={require('../assets/ham1.png')} />
+          <Image style={styles.image} source={{ uri: 'https://i.ibb.co/z7hR8fZ/burger.png' }} />
         </View>
         <View style={styles.dealContainer}>
           <View>
@@ -34,7 +34,7 @@ export default function DealsSection() {
             </View>
           </View>
 
-          <Image style={styles.image} source={require('../assets/fries.png')} />
+          <Image style={styles.image} source={{ uri: 'https://i.ibb.co/sFSxyn4/pizza.png' }} />
         </View>
         <View style={styles.dealContainer}>
           <View>
@@ -45,7 +45,7 @@ export default function DealsSection() {
               <Text style={styles.discountText}>60% off</Text>
             </View>
           </View>
-          <Image style={styles.image} source={require('../assets/pizza.png')} />
+          <Image style={styles.image} source={{ uri: 'https://i.ibb.co/Rcgvk1N/fries.png' }} />
         </View>
         <View style={styles.dealContainer}>
           <View>
@@ -57,7 +57,7 @@ export default function DealsSection() {
             </View>
           </View>
 
-          <Image style={styles.image} source={require('../assets/biriyani.png')} />
+          <Image style={styles.image} source={{ uri: 'https://i.ibb.co/zsYHGpd/biriyani.png' }} />
         </View>
       </ScrollView>
     </View>
@@ -79,13 +79,14 @@ const styles = StyleSheet.create({
   dealContainer: {
     padding: 10,
     borderRadius: 20,
-    width: width * 0.65,
+    width: width * 0.5,
     backgroundColor: '#7F27FF',
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 20,
-    gap: -10,
+    gap: -20,
     elevation: 5,
+    marginRight: 40,
   },
   titleText: {
     fontSize: 20,
