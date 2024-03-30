@@ -19,8 +19,8 @@ Foodio is a mobile application built with React Native using Expo for the fronte
 
 ## Working Images
 
-![Home Screen](./assets/WorkingImages/1.png)
-![Food Details](./assets/WorkingImages/2.png)
+![Home Screen](images/1.png)
+![Food Details](images/2.png)
 
 
 ## Getting Started
