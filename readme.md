@@ -18,7 +18,7 @@ Foodio is a mobile application built with React Native using Expo for the fronte
 - MongoDB 
 
 ## Working Images
-
+![Preview](images/foodio.gif)
 ![Home Screen](images/1.png)
 ![Food Details](images/2.png)
 
@@ -34,14 +34,14 @@ Foodio is a mobile application built with React Native using Expo for the fronte
 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/lokeshdarla/foodio.git
 cd foodio
 ```
 
 2. Install dependencies:
 
 ```bash
-cd frontend
+cd mobile
 npm install
 ```
 
@@ -53,8 +53,8 @@ npm install
 1. Start the Expo server for the frontend:
 
 ```bash
-cd frontend
-expo start
+cd mobile
+npx expo start
 ```
 
 3. Follow the instructions in the Expo CLI to run the app on an emulator or physical device.
@@ -68,8 +68,8 @@ expo start
 
 # Foodio Backend API
 
-This repository contains the backend API for the Foodio application. The API is built with Express.js and is responsible for managing food items, categories, and restaurants.
-The backend for Foodio is currently hosted at [https://foodio-mu.vercel.app/](https://foodio-mu.vercel.app/).
+- The API is built with Express.js and is responsible for managing food items, categories, and restaurants.
+- The backend for Foodio is currently hosted at [https://foodio-mu.vercel.app/](https://foodio-mu.vercel.app/).
 
 ## Controller Functions
 
