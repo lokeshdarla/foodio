@@ -2,10 +2,18 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, Dimensions } from 'rea
 import React, { useState, useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
-
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../navigation/appNavigation';
 var { width, height } = Dimensions.get('window');
 
+
+
+type Props = NativeStackScreenProps<RootStackParamList>
+type ScreenNavigationProp = Props['navigation']
+
 interface IFoodItem {
+  _id: string;
   name: string;
   price: number;
   categoryId: string;
@@ -36,16 +44,17 @@ const FoodItemList: React.FC<FoodItemListProps> = ({ foodItems }) => {
 
 const FoodItem: React.FC<{ item: IFoodItem }> = ({ item }) => {
 
+  const navigation = useNavigation<ScreenNavigationProp>();
 
   return (
     <>
-      <TouchableOpacity style={styles.container}>
+      <TouchableOpacity style={styles.container} onPress={() => navigation.push('FoodView', { ItemId: item._id })}>
         <View style={{ flexDirection: 'row', gap: 5, position: 'absolute', zIndex: 20, right: 0, top: 6, backgroundColor: '#EEF5FF', padding: 5, borderRadius: 30, elevation: 3 }}>
           <Ionicons name="alarm-outline" size={20} color="red" />
           <Text>{item.deliveryTime} min</Text>
         </View>
         <View style={{ elevation: 2, width: 170, padding: 10, borderRadius: 20, backgroundColor: 'white' }}>
-          <Image style={{ width: 150, height: 160 }} source={{ uri: item.imageUrl }} />
+          <Image style={{ width: 150, height: 160, objectFit: 'contain' }} source={{ uri: item.imageUrl }} />
           <Text style={{ fontSize: 15, marginBottom: 5, fontWeight: '600', textAlign: 'center' }}>{item.name}</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <Text style={{ fontSize: 20, fontWeight: "600" }}>{item.price}</Text>

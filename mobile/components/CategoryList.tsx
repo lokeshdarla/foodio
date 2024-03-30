@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Image, Text, Modal, StyleSheet, Dimensions, TouchableOpacity, TextInput } from 'react-native';
+import { View, ScrollView, ActivityIndicator, Image, Text, Modal, StyleSheet, Dimensions, TouchableOpacity, TextInput } from 'react-native';
 import axios from 'axios';
 import FoodItemsList from './FoodItem';
 import { Feather } from '@expo/vector-icons';
@@ -16,6 +16,7 @@ interface ICategories {
 }
 
 interface IFoodItem {
+  _id: string,
   name: string;
   price: number;
   categoryId: string;
@@ -30,14 +31,14 @@ interface FilterModalProps {
   visible: boolean;
   onClose: () => void;
   sort: string;
-  setSort: React.Dispatch<React.SetStateAction<string>>; // Add setSort prop
+  setSort: React.Dispatch<React.SetStateAction<string>>;
 }
 
 
 const FilterModal: React.FC<FilterModalProps> = ({ visible, onClose, sort, setSort }) => {
   const handleSort = (order: string) => {
     setSort(order);
-    onClose(); // Close the modal after selecting the sorting order
+    onClose();
   };
 
   const handleClear = () => {
@@ -84,19 +85,26 @@ const CategoriesList: React.FC = () => {
   const [foodItems, setFoodItems] = useState<IFoodItem[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [sort, setSort] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [foodLoading, setFoodLoading] = useState(false);
 
   useEffect(() => {
+
     fetchData();
+
   }, []);
 
   useEffect(() => {
+
     fetchFood();
   }, [selectedCategory, searchQuery, sort]);
 
   const fetchFood = async () => {
+    setFoodLoading(true);
     try {
       const response = await axios.get(`https://foodio-mu.vercel.app/fooditems?category=${selectedCategory}&search=${searchQuery}&sort=${sort}`); // Added "=" sign
       setFoodItems(response.data);
+      setFoodLoading(false);
     } catch (error) {
       console.error('Error fetching food items:', error);
     }
@@ -108,8 +116,10 @@ const CategoriesList: React.FC = () => {
 
   const fetchData = async () => {
     try {
+      setLoading(true);
       const response = await axios.get(`https://foodio-mu.vercel.app/categories/`);
       setCategoryData(response.data);
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching categories:', error);
     }
@@ -126,7 +136,7 @@ const CategoriesList: React.FC = () => {
       <ScrollView
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: 10, paddingVertical: 20 }}
+        contentContainerStyle={{ paddingHorizontal: 10, paddingVertical: 20, alignItems: 'center' }}
       >
         <CategoryItem
           category={''}
@@ -135,16 +145,22 @@ const CategoriesList: React.FC = () => {
           selectedCategory={selectedCategory}
           onPress={handleCategoryPress}
         />
-        {categoryData.map((category) => (
-          <CategoryItem
-            key={category._id}
-            category={category._id}
-            icon={category.imageURL}
-            label={category.name}
-            selectedCategory={selectedCategory}
-            onPress={handleCategoryPress}
-          />
-        ))}
+        {loading ? (
+          <View style={{ marginLeft: 20 }}><ActivityIndicator size="large" color="black" /></View>
+        ) : (
+          categoryData.map((category) => (
+            <CategoryItem
+              key={category._id}
+              category={category._id}
+              icon={category.imageURL}
+              label={category.name}
+              selectedCategory={selectedCategory}
+              onPress={handleCategoryPress}
+            />
+          ))
+        )}
+
+
       </ScrollView>
       <View style={{ flexDirection: 'row', gap: 10, justifyContent: 'center', alignItems: 'center', marginBottom: 20 }}>
         <View style={{
@@ -181,7 +197,9 @@ const CategoriesList: React.FC = () => {
           <FilterModal visible={modalVisible} onClose={toggleModal} sort={sort} setSort={setSort} />
         </View>
       </View>
-      <FoodItemsList foodItems={foodItems} />
+      {foodLoading ? <View style={{ marginTop: 30 }}><ActivityIndicator size="large" color="black" /></View> : <FoodItemsList foodItems={foodItems} />}
+
+
     </View>
   );
 };

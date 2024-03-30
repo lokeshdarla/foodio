@@ -8,9 +8,20 @@ import { Entypo } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import FoodViewScreen from '../screens/FoodViewScreen';
+import RestaurantsScreen from '../screens/RestaurantsScreen';
+import CartScreen from '../screens/CartScreen';
+import NotificationScreen from '../screens/NotificationScreen';
 
 
-const Stack = createNativeStackNavigator()
+export type RootStackParamList = {
+  HomeView: undefined;
+  Welcome: undefined;
+  HomeScreen: undefined;
+  FoodView: { ItemId: string };
+};
+
+
+const Stack = createNativeStackNavigator<RootStackParamList>()
 const Tab = createBottomTabNavigator();
 
 
@@ -20,14 +31,14 @@ const MainNavigation = () => {
       screenOptions={{
         tabBarShowLabel: false,
         tabBarStyle: { backgroundColor: 'white', padding: 5, borderRadius: 50, height: 70, marginBottom: 20, marginHorizontal: 2 },
-        tabBarActiveTintColor: '#430A5D',
+        tabBarActiveTintColor: '#7F27FF',
         tabBarHideOnKeyboard: true,
         tabBarInactiveTintColor: 'gray',
       }}
     >
       <Tab.Screen
-        name="Home"
-        component={HomeScreen}
+        name="HomeScreenMain"
+        component={HomeScreenNavigation}
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
@@ -37,10 +48,9 @@ const MainNavigation = () => {
       />
       <Tab.Screen
         name="Restaurants"
-        component={FoodViewScreen}
+        component={RestaurantsScreen}
         options={{
-          headerTitle: 'Explore',
-          headerShown: false,
+          headerTitle: 'Restaurants',
           headerTitleAlign: 'center',
           headerStyle: {
             backgroundColor: 'black',
@@ -54,9 +64,9 @@ const MainNavigation = () => {
       />
       <Tab.Screen
         name="Cart"
-        component={HomeScreen}
+        component={CartScreen}
         options={{
-          headerTitle: 'List your NFT',
+          headerTitle: 'Cart',
           headerTitleAlign: 'center',
           headerStyle: {
             backgroundColor: 'black',
@@ -70,7 +80,7 @@ const MainNavigation = () => {
       />
       <Tab.Screen
         name="Notification"
-        component={HomeScreen}
+        component={NotificationScreen}
         options={{
           headerTitle: 'Notifications',
           headerTitleAlign: 'center',
@@ -89,6 +99,7 @@ const MainNavigation = () => {
 };
 
 
+
 const AppNavigation = () => {
   return (
     <NavigationContainer>
@@ -100,4 +111,14 @@ const AppNavigation = () => {
   )
 }
 
-export default AppNavigation
+const HomeScreenNavigation = () => {
+  return (
+    <Stack.Navigator initialRouteName='HomeView'>
+      <Stack.Screen name="HomeView" component={HomeScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="FoodView" component={FoodViewScreen} options={{ headerShown: false }} />
+    </Stack.Navigator>
+  )
+}
+
+export default AppNavigation;
+

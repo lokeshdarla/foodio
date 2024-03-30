@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ImageBackground, StyleSheet, Image, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, ImageBackground, ToastAndroid, ActivityIndicator, StyleSheet, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
-const { width, height } = Dimensions.get('window');
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
+import { RootStackParamList } from '../navigation/appNavigation';
+var { width, height } = Dimensions.get('window');
+
+
+
+type Props = NativeStackScreenProps<RootStackParamList, 'FoodView'>
+type ScreenNavigationProp = Props['navigation']
+type ScreenRouteProp = Props['route']
 import { FontAwesome5 } from '@expo/vector-icons';
 import axios from 'axios';
 
-export interface IFoodItem {
+interface IMenuItem {
+  _id: string;
   name: string;
   price: number;
   categoryId: string;
@@ -14,19 +25,46 @@ export interface IFoodItem {
   ratings: number;
   description: string;
   deliveryTime: number;
+  category: ICategory;
+  restaurant: IRestaurant;
 }
 
-export default function FoodViewScreen() {
-  const [foodData, setFoodData] = useState<IFoodItem | null>(null);
+interface ICategory {
+  _id: string;
+  name: string;
+  imageUrl: string;
+}
+
+interface IRestaurant {
+  _id: string;
+  name: string;
+  address: string;
+  imageUrl: string;
+  ratings: number;
+}
+
+
+const FoodViewScreen: React.FC<Props> = () => {
+  const route = useRoute<ScreenRouteProp>();
+  const navigation = useNavigation<ScreenNavigationProp>();
+  const { ItemId } = route.params
+  const [loading, setloading] = useState(false);
+  const [foodData, setFoodData] = useState<IMenuItem | null>(null);
   useEffect(() => {
     fetchData();
   }, []);
 
-  const fetchData = async () => {
-    try {
 
-      const response = await axios.get(`https://foodio-mu.vercel.app/fooditems/66055878784095e43c6308e0`);
+  function showToast() {
+    ToastAndroid.show('Added to Cart!', ToastAndroid.LONG);
+  }
+
+  const fetchData = async () => {
+    setloading(true);
+    try {
+      const response = await axios.get(`https://foodio-mu.vercel.app/fooditems/${ItemId}`);
       setFoodData(response.data);
+      setloading(false);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -35,11 +73,19 @@ export default function FoodViewScreen() {
 
   return (
     <ImageBackground source={require('../assets/bg_food.png')} style={styles.backgroundImage}>
-      <View style={{ position: 'absolute', top: 80, left: 20 }}>
+      <TouchableOpacity onPress={() => navigation.push('HomeScreen')} style={{ position: 'absolute', top: 80, left: 20, padding: 10, backgroundColor: "white", borderRadius: 50, paddingHorizontal: 15, zIndex: 50 }}>
         <FontAwesome5 name="chevron-left" size={24} color="black" />
-      </View>
+      </TouchableOpacity>
       <View style={styles.container}>
-        <Image style={styles.foodImage} source={{ uri: foodData?.imageUrl }} />
+        {!loading ? (
+          <Image style={styles.foodImage} source={{ uri: foodData?.imageUrl }} />
+        ) : (
+          <View style={[styles.foodImage, { alignItems: 'center', justifyContent: 'center' }]}>
+            <ActivityIndicator size={50} color='black' />
+          </View>
+        )}
+
+
 
 
         {/* Food Details */}
@@ -47,7 +93,7 @@ export default function FoodViewScreen() {
           <View style={{ flexDirection: 'row', paddingHorizontal: 15, justifyContent: 'space-between', alignItems: 'center' }}>
             <View>
               <Text style={styles.foodName}>{foodData?.name}</Text>
-              <Text style={{ fontSize: 15 }}>{foodData?.restaurantId}</Text>
+              <Text style={{ fontSize: 15 }}>{foodData?.restaurant?.name}</Text>
               <Text></Text>
             </View>
 
@@ -84,6 +130,7 @@ export default function FoodViewScreen() {
             </Text>
           </View>
           <TouchableOpacity
+            onPress={showToast}
             style={{
               flexDirection: 'row',
               marginTop: 'auto',
@@ -109,9 +156,13 @@ export default function FoodViewScreen() {
   );
 }
 
+
+export default FoodViewScreen;
+
 const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
+    position: 'relative',
     resizeMode: 'cover',
   },
   container: {
@@ -142,7 +193,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   foodName: {
-    fontSize: 23,
+    fontSize: 20,
     fontWeight: 'bold',
   },
   price: {
