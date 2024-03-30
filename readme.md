@@ -69,6 +69,7 @@ expo start
 # Foodio Backend API
 
 This repository contains the backend API for the Foodio application. The API is built with Express.js and is responsible for managing food items, categories, and restaurants.
+The backend for Foodio is currently hosted at [https://foodio-mu.vercel.app/](https://foodio-mu.vercel.app/).
 
 ## Controller Functions
 
@@ -76,7 +77,7 @@ This repository contains the backend API for the Foodio application. The API is 
 
 - **Description**: Retrieves a list of food items based on optional query parameters such as sorting, filtering by category, and searching by name.
 - **HTTP Method**: GET
-- **Route**: `/api/fooditems`
+- **Route**: `/fooditems`
 - **Query Parameters**:
   - `sort`: Sorts the food items by price in ascending (`asc`) or descending (`desc`) order.
   - `category`: Filters the food items by category ID.
@@ -90,7 +91,7 @@ This repository contains the backend API for the Foodio application. The API is 
 
 - **Description**: Retrieves a single food item by its ID.
 - **HTTP Method**: GET
-- **Route**: `/api/fooditems/:id`
+- **Route**: `/fooditems/:id`
 - **Response**:
   - Status Code: 200 (OK) if the food item is found.
   - Status Code: 404 (Not Found) if the food item is not found.
@@ -102,7 +103,7 @@ This repository contains the backend API for the Foodio application. The API is 
 
 - **Description**: Retrieves a list of all categories.
 - **HTTP Method**: GET
-- **Route**: `/api/categories`
+- **Route**: `/categories`
 - **Response**:
   - Status Code: 200 (OK)
   - Body: Array of category objects.
@@ -111,7 +112,7 @@ This repository contains the backend API for the Foodio application. The API is 
 
 - **Description**: Retrieves a single category by its ID.
 - **HTTP Method**: GET
-- **Route**: `/api/categories/:id`
+- **Route**: `/categories/:id`
 - **Response**:
   - Status Code: 200 (OK) if the category is found.
   - Status Code: 404 (Not Found) if the category is not found.
